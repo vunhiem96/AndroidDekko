@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Nhiem</string>
+    <string name="ng_nh_p">Đăng Nhập</string>
+    <string name="title_activity_user_main">user_main</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_activity_user_profile">User_profile</string>
+</resources>
