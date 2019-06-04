@@ -1,9 +1,11 @@
-package com.example.nhiem;
+package com.example.nhiem.Controller.Main;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.example.nhiem.Model.User;
+import com.example.nhiem.R;
 import com.kofigyan.stateprogressbar.StateProgressBar;
 import com.squareup.picasso.Picasso;
 

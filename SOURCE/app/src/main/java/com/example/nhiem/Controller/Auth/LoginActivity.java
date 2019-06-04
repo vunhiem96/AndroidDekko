@@ -1,4 +1,4 @@
-package com.example.nhiem;
+package com.example.nhiem.Controller.Auth;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,11 +9,17 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.example.nhiem.Controller.Main.HomeActivity;
+import com.example.nhiem.Model.User;
+import com.example.nhiem.R;
+import com.example.nhiem.Utils.AppConfig;
+
 public class LoginActivity extends AppCompatActivity {
     EditText edtPhoneNumber;
     RelativeLayout rlLogin;
     ImageView imgFB;
     ImageView imgGG;
+    String soDienThoai;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (checkValid()) {
-                    Intent intent = new Intent(LoginActivity.this, user_main.class);
+                    Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
 
                     User user;
                     user = new User();
@@ -41,6 +47,8 @@ public class LoginActivity extends AppCompatActivity {
                     user.setProfileUrl("https://i.imgur.com/R6JbROY.jpg");
                     user.setId(1);
                     intent.putExtra("user", user);
+                    AppConfig.setPhoneNumber(edtPhoneNumber.getText().toString(),LoginActivity.this);
+                    AppConfig.setNameUser("Vũ Nhiệm",LoginActivity.this);
                     startActivity(intent);
                     finish();
                 } else {
@@ -49,12 +57,17 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+    /*private void setProfile() {
+        AppConfig.setPhoneNumber(soDienThoai, LoginActivity.this);
+        AppConfig.setNameUser("Trung Daniel",LoginActivity.this);
+        AppConfig.setUrlUser("https://bitly.vn/46l9",LoginActivity.this);
+
+    }*/
 
     boolean checkValid() {
         int phoneLeng = edtPhoneNumber.getText().toString().length();
         return (phoneLeng > 9);
-
-
     }
+
 }
 

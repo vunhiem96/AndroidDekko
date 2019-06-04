@@ -10,10 +10,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".user_main"></activity>
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".HomeActivity">
+        android:theme="@style/AppTheme"
+        android:largeHeap="true">
+        <activity android:name=".Controller.Main.HomeActivity"></activity>
+        <activity android:name=".Controller.Main.user_main" />
+        <activity android:name=".Controller.Auth.LoginActivity" />
+        <activity android:name=".Controller.Auth.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

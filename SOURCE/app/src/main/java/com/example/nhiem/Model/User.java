@@ -1,4 +1,4 @@
-package com.example.nhiem;
+package com.example.nhiem.Model;
 
 import java.io.Serializable;
 
