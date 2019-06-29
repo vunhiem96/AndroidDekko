@@ -1,17 +1,26 @@
 package com.example.nhiem.Controller.Main;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.nhiem.Controller.Auth.LoginActivity;
+import com.example.nhiem.Controller.Main.Adapter.NewsAdapter;
+import com.example.nhiem.Controller.Main.Adapter.PromotionAdapter;
 import com.example.nhiem.Model.HomeData;
+import com.example.nhiem.Model.News;
 import com.example.nhiem.Model.User;
 import com.example.nhiem.R;
 import com.example.nhiem.Utils.AppConfig;
@@ -20,12 +29,15 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 public class HomeActivity extends AppCompatActivity {
+
     TextView btnLogout;
     TextView tvUsername, tvPhoneNumber;
     ImageView imgNews1, imgNews2, imgNews3, imgCtth1, imgCtth2;
     TextView tvNews1, tvNews2, tvNews3, tvCtth1, tvCtth2;
     Button btnLinkNew1;
    RecyclerView rvNews;
+  HomeData homeData;
+  RecyclerView rvPromotion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,43 +46,62 @@ public class HomeActivity extends AppCompatActivity {
         init();
         getData();
         thongTin();
-        dangxuat();
+       dangxuat();
         docJson();
-        news();
+        //news();
+        configRVNewss();
+        configPromo ();
+    }
+    void configRVNewss() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false);
+        rvNews.setLayoutManager(linearLayoutManager);
+        NewsAdapter adapter = new NewsAdapter();
+        adapter.data = homeData.getHomeResult().getListNews();
+        adapter.setContext(this);
+        rvNews.setAdapter(adapter);
+    }
+    void configPromo (){
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
+        rvPromotion.setLayoutManager(linearLayoutManager);
+        PromotionAdapter adapter = new PromotionAdapter();
+        adapter.dataPromotion = homeData.getHomeResult().getListPromotion();
+        adapter.setContext(this);
+        rvPromotion.setAdapter(adapter);
+
     }
 
-    private void docJson() {
+    public void docJson() {
         String strHomeData = Utli.loadJSONFromAsset(this);
         Gson gson = new Gson();
-        HomeData homeData = gson.fromJson(strHomeData, HomeData.class);
+        homeData = gson.fromJson(strHomeData, HomeData.class);
 
-        String newsTitle1 = homeData.getResult().getListNews().get(0).getTitle();
-        String urlnew1 = homeData.getResult().getListNews().get(0).getUrlImage();
-
-        String newsTitle2 = homeData.getResult().getListNews().get(1).getTitle();
-        String urlnew2 = homeData.getResult().getListNews().get(1).getUrlImage();
-
-        String newsTitle3 = homeData.getResult().getListNews().get(2).getTitle();
-        String urlnew3 = homeData.getResult().getListNews().get(2).getUrlImage();
-
-        String ctthTitle1 = homeData.getResult().getListPromotion().get(0).getTitle();
-        String urlImage1 = homeData.getResult().getListPromotion().get(0).getUrlImage();
-
-        String ctthTitle2 = homeData.getResult().getListPromotion().get(1).getTitle();
-        String urlImage2 = homeData.getResult().getListPromotion().get(1).getUrlImage();
-
-
-        tvNews1.setText(newsTitle1);
-        tvNews2.setText(newsTitle2);
-        tvNews3.setText(newsTitle3);
-        tvCtth1.setText(ctthTitle1);
-        tvCtth2.setText(ctthTitle2);
-        Picasso.get().load(urlnew1).placeholder(R.mipmap.img_default).into(imgNews1);
-        Picasso.get().load(urlnew2).placeholder(R.mipmap.img_default).into(imgNews2);
-        Picasso.get().load(urlnew3).placeholder(R.mipmap.img_default).into(imgNews3);
-
-        Picasso.get().load(urlImage1).placeholder(R.mipmap.img_default).into(imgCtth1);
-        Picasso.get().load(urlImage2).placeholder(R.mipmap.img_default).into(imgCtth2);
+//      String newsTitle1 = homeData.getHomeResult().getListNews().get(0).getTitle();// moi
+//        String urlnew1 = homeData.getResult().getListNews().get(0).getUrlImage();
+//
+//        String newsTitle2 = homeData.getResult().getListNews().get(1).getTitle();
+//        String urlnew2 = homeData.getResult().getListNews().get(1).getUrlImage();
+//
+//        String newsTitle3 = homeData.getResult().getListNews().get(2).getTitle();
+//        String urlnew3 = homeData.getResult().getListNews().get(2).getUrlImage();
+//
+//        String ctthTitle1 = homeData.getResult().getListPromotion().get(0).getTitle();
+//        String urlImage1 = homeData.getResult().getListPromotion().get(0).getUrlImage();
+//
+//        String ctthTitle2 = homeData.getResult().getListPromotion().get(1).getTitle();
+//        String urlImage2 = homeData.getResult().getListPromotion().get(1).getUrlImage();
+//
+//
+//        tvNews1.setText(newsTitle1);
+//        tvNews2.setText(newsTitle2);
+//        tvNews3.setText(newsTitle3);
+//        tvCtth1.setText(ctthTitle1);
+//        tvCtth2.setText(ctthTitle2);
+//        Picasso.get().load(urlnew1).placeholder(R.mipmap.img_default).into(imgNews1);
+//        Picasso.get().load(urlnew2).placeholder(R.mipmap.img_default).into(imgNews2);
+//        Picasso.get().load(urlnew3).placeholder(R.mipmap.img_default).into(imgNews3);
+//
+//        Picasso.get().load(urlImage1).placeholder(R.mipmap.img_default).into(imgCtth1);
+//        Picasso.get().load(urlImage2).placeholder(R.mipmap.img_default).into(imgCtth2); // moi
 
         /* try {
             JSONObject jsonHomeData = new JSONObject(homeData);
@@ -136,20 +167,17 @@ public class HomeActivity extends AppCompatActivity {
 
 
     void init() {
+        rvPromotion = (RecyclerView) findViewById(R.id.rcv_promotion);
         btnLogout = (TextView) findViewById(R.id.tv_logout);
         tvUsername = findViewById(R.id.tv_user_name);
         tvPhoneNumber = findViewById(R.id.tv_phone_number);
-        imgNews1 = findViewById(R.id.img_news_1);
-        imgNews2 = findViewById(R.id.img_news_2);
-        imgNews3 = findViewById(R.id.img_news_3);
-        tvNews1 = findViewById(R.id.tv_new_1);
-        tvNews2 = findViewById(R.id.tv_new_2);
-        tvNews3 = findViewById(R.id.tv_new_3);
-        imgCtth1 = findViewById(R.id.img_ctth1);
-        imgCtth2 = findViewById(R.id.img_ctth2);
-        tvCtth1 = findViewById(R.id.tv_ctth1);
-        tvCtth2 = findViewById(R.id.tv_ctth2);
-        btnLinkNew1 = (Button) findViewById(R.id.btn_link_new1);
+       // imgNews1 = findViewById(R.id.img_news_1);
+       // tvNews1 = findViewById(R.id.tv_new_1);
+//        imgCtth1 = findViewById(R.id.img_ctth1);
+//        imgCtth2 = findViewById(R.id.img_ctth2);
+//        tvCtth1 = findViewById(R.id.tv_ctth1);
+//        tvCtth2 = findViewById(R.id.tv_ctth2);
+     //  btnLinkNew1 = (Button) findViewById(R.id.btn_link_new1);
         rvNews = findViewById(R.id.rv_news);
 
     }
@@ -158,12 +186,37 @@ public class HomeActivity extends AppCompatActivity {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppConfig.logout(HomeActivity.this);
-                Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
+             onBackPressed();
+//                AppConfig.logout(HomeActivity.this);
+//                Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+//                startActivity(intent);
+//                finish();
             }
         });
+    }
+    public void onBackPressed() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.app_name);
+        builder.setIcon(R.mipmap.ic_launcher);
+        builder.setMessage("Bạn có muốn thoát không?")
+                .setCancelable(false)
+                .setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        AppConfig.logout(HomeActivity.this);
+                        Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
+
     }
 
     private void news() {
@@ -200,4 +253,17 @@ public class HomeActivity extends AppCompatActivity {
         tvUsername.setText(AppConfig.getNameUser(HomeActivity.this));
         tvPhoneNumber.setText(AppConfig.getPhoneNumber(HomeActivity.this));
     }
+
+//    class NewsViewHolder extends RecyclerView.ViewHolder{
+//        ImageView imgBg;
+//        TextView tvTitle;
+//        Button btnDetail;
+//
+//        public NewsViewHolder(@NonNull View itemView) {
+//            super(itemView);
+//            imgBg = (ImageView) findViewById(R.id.img_bg);
+//            tvTitle = (TextView) findViewById(R.id.tv_title);
+//            btnDetail = (Button) findViewById(R.id.btn_detail);
+//        }
+//    }
 }

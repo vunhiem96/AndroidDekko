@@ -34,7 +34,7 @@ public void setCode(Integer code) {
 this.code = code;
 }
 
-public HomeResult getResult() {
+public HomeResult getHomeResult() {
 return result;
 }
 
